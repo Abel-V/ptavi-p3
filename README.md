@@ -1,4 +1,4 @@
 ptavi-p3
 ========
 
-My first repository on GitHub :happy:
+My first repository on GitHub :smile:
