@@ -4,24 +4,42 @@
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
 
+
 class SmallSMILHandler(ContentHandler):
 
-    def __init__ (self):
+    def __init__(self):
+        #Diccionario de Listas con todo lo que puedo tener (sólamente para
+        #buscar los nombres, no para guardar valores)
+        self.KaraokeDicc = {
+            'root-layout': ['width', 'height', 'background-color'],
+            'region': ['id', 'top', 'bottom', 'left', 'right'],
+            'img': ['src', 'region', 'begin', 'dur'],
+            'audio': ['src', 'begin', 'dur'],
+            'textstream': ['src', 'region']
+        }
+        #Lista donde guardaré las etiquetas que encuentre; serán diccionarios
+        #cada una de ellas
+        self.Etiquetas = []
 
-    root-layout (width, height, background-color):
+    def startElement(self, name, attrs):
+        if name in self.KaraokeDicc:
+            Atributos = {}  # creo el diccionario para guardar valores
+            Atributos['etiqueta'] = name  # Guardo el nombre de la etiqueta
+                                          # como una entrada del diccionario
+            for Atributo in self.KaraokeDicc[name]:  # busco en la entrada=name
+                Atributos[Atributo] = attrs.get(Atributo, "")
+                #Esta funcion guarda el valor de Atributo, si existe en esa
+                #etiqueta, y si no, guarda un string vacío
+            self.Etiquetas.append(Atributos)
 
-    region (id, top, bottom, left, right):
-
-    img (src, region, begin, dur):
-
-    audio (src, begin, dur):
-
-    textstream (src, region):
-
-    def get tags():
+    def get_tags(self):
+        return self.Etiquetas
 
 
-#1o cogí de Github la carpeta ptavi-p3 con: git clone "http del repo ptavi-p3"
-#añadirlo 1a vez: hacer git add fichero
-#luego se actualiza en el repo local con: git commit -m "mensaje explicativo"
-#y finalmente en el github con git push
+if __name__ == "__main__":
+
+    parser = make_parser()
+    Handler = SmallSMILHandler()
+    parser.setContentHandler(Handler)
+    parser.parse(open('karaoke.smil'))
+    print Handler.get_tags()
