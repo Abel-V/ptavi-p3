@@ -27,7 +27,7 @@ for Dicc in List:
 				os.system("wget -q " + recurso)
 				NombreLocal = recurso.split('/')[-1]  # Me quedo con lo último
 				Dicc[Atrib] = NombreLocal  # Que es el nombre de lo descargado
-		print  Atrib, '= "' + Dicc[Atrib] + '" \t',
+			print  Atrib, '= "' + Dicc[Atrib] + '" \t',
 			
 	print  # escribe una linea en blanco
 
